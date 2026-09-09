@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+
+    <title>Alita Care · A IA que atende, qualifica e agenda por você</title>
+    <meta
+      name="description"
+      content="A Alita atende quem procura você, entende o que a pessoa precisa e devolve o lead qualificado, com os dados preenchidos e a reunião marcada."
+    />
+    <link rel="canonical" href="https://alitaapp.com.br/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Alita Care" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Alita Care · A IA que atende, qualifica e agenda por você" />
+    <meta
+      property="og:description"
+      content="O lead chega, a IA conversa e o cadastro se preenche. Atendimento em todos os canais de entrada, 24 horas por dia."
+    />
+    <meta property="og:url" content="https://alitaapp.com.br/" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Um por tema, casando com `--color-canvas` de cada bloco de colors.css.
+         Se o canvas mudar lá, estes dois mudam junto. -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#05060a" media="(prefers-color-scheme: dark)" />
+
+    <!--
+      Aplica o tema ANTES do primeiro paint.
+
+      ⚠️ Este script é obrigatório e não é duplicata do next-themes: o HTML desta
+      página é pré-renderizado, então sem ele o visitante veria o tema claro por
+      um frame antes do JS trocar a classe. Ele roda síncrono no <head>, então o
+      <body> já pinta na cor certa.
+
+      A `storageKey` tem que ser a MESMA declarada no ThemeProvider (main.tsx),
+      senão o script e o toggle leem chaves diferentes e a preferência se perde.
+      Sem nada salvo, o padrão é escuro — é o tema em que a marca foi desenhada.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("alita-lp-theme");
+          var theme = stored === "light" || stored === "dark" ? stored : "dark";
+          if (theme === "dark") document.documentElement.classList.add("dark");
+        } catch (e) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"><!--app-html--></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

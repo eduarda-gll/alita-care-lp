@@ -1,0 +1,147 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ARQUIVO ÚNICO DE COR — Landing page do Alita Care
+   ───────────────────────────────────────────────────────────────────────────
+   Mesma regra do alita-frontend (docs/identidade-visual.md §3.0): TODA cor de
+   marca/tema vive aqui, em DOIS blocos que declaram AS MESMAS variáveis, na
+   mesma ordem — `@theme` é o tema claro, `.dark` é o escuro. Nunca crie cor de
+   marca fora deste arquivo (nada de hex ou `style` inline num componente) e
+   nunca mude um bloco sem espelhar no outro.
+
+   ⚠️ O Figma desta LP foi desenhado 100% no ESCURO. O bloco `.dark` é a
+   tradução fiel dele; o `@theme` é a adaptação para o claro (pedido explícito
+   de suportar os dois temas). Onde o escuro usa nebulosa/glow sobre preto, o
+   claro usa a mesma geometria em lavagem azul bem clara — mesma composição,
+   não uma tela diferente.
+
+   ⚠️ Contraste: todo par que carrega texto ou objeto gráfico está vigiado em
+   `scripts/check-color-contrast.mjs`. Rode `npm run check:contrast` antes de
+   subir qualquer valor daqui.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ══ 1. AÇÃO — o azul da marca ══
+     No claro o azul precisa servir a DOIS papéis com exigências opostas: como
+     TEXTO sobre canvas branco pede ≥4,5:1, e como FILL com tinta branca pede a
+     mesma coisa do outro lado. `#3549b8` fecha os dois (7,05:1 como texto sobre
+     branco; 7,05:1 com a tinta branca por cima), então base e fill são o mesmo
+     hex — não há ganho em calibrar dois. O periwinkle vivo do Figma (`#8ba3f8`)
+     reprova nos dois papéis no claro (2,42:1), e por isso ele só existe no
+     bloco escuro. */
+  --color-accent: #3549b8;
+  --color-accent-hover: #2b3c9c;
+  --color-accent-strong: #3549b8;
+  --color-accent-strong-hover: #2b3c9c;
+  /* Fundo tingido de badge/pill/eyebrow. Texto por cima é `accent`, nunca
+     `accent` sobre canvas cru quando o pill existe. */
+  --color-accent-soft: #eef1fd;
+  --color-accent-border: #c9d2f6;
+
+  /* ══ 2. TINTA SOBRE COR ══
+     `on-accent` é a tinta sobre `accent-strong`. `on-dark` é claro FIXO nos dois
+     temas, para o que fica sobre superfície escura em qualquer tema (o painel do
+     hero, o mockup de conversa). Sem ele, `bg-white`/`text-white` seriam a saída
+     fácil — e elas não existem de propósito (ver §5 abaixo). */
+  --color-on-accent: #ffffff;
+  --color-on-dark: #ffffff;
+
+  /* ══ 3. SUPERFÍCIE — quatro papéis, nenhum reusa o token do outro ══
+     canvas   = o fundo da página, atrás de tudo
+     surface  = card, painel, linha de FAQ
+     raised   = mockup de produto, o "vidro" que flutua sobre o canvas
+     recessed = painel recuado DENTRO de um card (bolha recebida, célula) */
+  --color-canvas: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-recessed: #f2f4fa;
+  --color-surface-hover: #f5f7fd;
+
+  /* ══ 4. TEXTO ══ */
+  --color-text: #111827;
+  --color-text-muted: #5b6478;
+  --color-text-subtle: #8a93a6;
+  /* Texto secundário sobre `surface-recessed`. O `text-muted` cru fica em
+     4,44:1 ali e raspa abaixo de AA; este fecha 5,02:1. */
+  --color-text-muted-on-recessed: #545d70;
+
+  /* ══ 5. BORDA ══ */
+  --color-border: #e4e7ef;
+  --color-border-strong: #cdd3e0;
+
+  /* ══ 6. STATUS — só o que a LP usa (o chip "concluída" do mockup) ══ */
+  /* Escurecido de #15803d: sobre o success-soft ele fechava 4,459:1 e raspava
+     abaixo de AA. Este fecha 5,37:1. */
+  --color-success: #14722f;
+  --color-success-soft: #e7f5ec;
+
+  /* ══ 7. DECORATIVO — a nebulosa do hero e a malha dos planos ══
+     Não carregam texto e não são cor de marca: são o "espaço" atrás do
+     conteúdo. Ficam aqui mesmo assim, porque a regra é arquivo único. */
+  --color-glow-core: #b9c8ff;
+  --color-glow-halo: #dde5ff;
+  --color-glow-deep: #eef2ff;
+  --color-grid-line: #eaeefb;
+  /* Fundo do painel de mockup do hero/como-funciona. Ele é ESCURO nos dois
+     temas de propósito — é uma captura de produto, não uma superfície de
+     página, e o Figma mostra o app rodando no escuro. Mesmo espírito do
+     `AuthMarketingPanel` do app, que é fixo. */
+  --color-mockup-bg: #0d1017;
+  --color-mockup-border: #232838;
+  --color-mockup-text: #e8ebf4;
+  --color-mockup-muted: #98a1b6;
+}
+
+.dark {
+  /* ══ 1. AÇÃO ══
+     Este é o periwinkle do Figma. No escuro ele passa como texto sobre o canvas
+     (7,72:1) e o fill carrega tinta ESCURA, não branca — é o botão "Fale com a
+     Alita" do Figma, azul claro com texto navy. Branco sobre ele daria 2,44:1. */
+  --color-accent: #8ba3f8;
+  --color-accent-hover: #a2b5fa;
+  --color-accent-strong: #8ba3f8;
+  --color-accent-strong-hover: #a2b5fa;
+  --color-accent-soft: #151a2e;
+  --color-accent-border: #2a3358;
+
+  /* ══ 2. TINTA SOBRE COR ══
+     ⚠️ `on-accent` INVERTE no escuro: tinta escura sobre o fill claro
+     (12,58:1). É a única variável deste arquivo cujo papel muda de polaridade
+     entre os blocos, e é o que o Figma pede. `on-dark` NÃO inverte: ele é
+     "claro fixo nos dois temas" por definição. */
+  --color-on-accent: #0b1020;
+  --color-on-dark: #ffffff;
+
+  /* ══ 3. SUPERFÍCIE ══
+     Rampa curta e bem escura, como o Figma: o canvas é quase preto e o card se
+     separa por 1px de borda, não por degrau de tom (a mesma regra §10 do app,
+     "sem sombra em conteúdo"). */
+  --color-canvas: #05060a;
+  --color-surface: #0a0c12;
+  --color-surface-raised: #0f121b;
+  --color-surface-recessed: #141824;
+  --color-surface-hover: #12151f;
+
+  /* ══ 4. TEXTO ══ */
+  --color-text: #e8ebf4;
+  --color-text-muted: #98a1b6;
+  --color-text-subtle: #6b7488;
+  --color-text-muted-on-recessed: #9aa3b8;
+
+  /* ══ 5. BORDA ══ */
+  --color-border: #1b2030;
+  --color-border-strong: #2a3143;
+
+  /* ══ 6. STATUS ══ */
+  --color-success: #4ade80;
+  --color-success-soft: #10241a;
+
+  /* ══ 7. DECORATIVO ══ */
+  --color-glow-core: #4c6bd6;
+  --color-glow-halo: #1d2a55;
+  --color-glow-deep: #0a1130;
+  --color-grid-line: #141a2c;
+  /* Iguais ao bloco claro: o mockup é fixo nos dois temas (ver nota lá). */
+  --color-mockup-bg: #0d1017;
+  --color-mockup-border: #232838;
+  --color-mockup-text: #e8ebf4;
+  --color-mockup-muted: #98a1b6;
+}

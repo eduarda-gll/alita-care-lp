@@ -1,10 +1,6 @@
 import { Check, Sparkles } from "lucide-react";
 import { cn } from "@/lib/cn";
 
-/**
- * O resumo que o time recebe quando assume a conversa. Mesmos tokens
- * `mockup-*` das outras capturas.
- */
 export function HandoffMockup({
   summary,
   checks,
@@ -17,7 +13,7 @@ export function HandoffMockup({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-card border border-mockup-border bg-mockup-bg",
+        "overflow-hidden rounded-card border border-mockup-accent bg-mockup-bg",
         className,
       )}
     >

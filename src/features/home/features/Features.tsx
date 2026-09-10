@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { Section, SectionHeader } from "@/components/Section";
-import { Reveal } from "@/components/Reveal";
 import { LeadRecordMockup } from "@/components/mockups/LeadRecordMockup";
 import { AgendaMockup } from "@/components/mockups/AgendaMockup";
 import { HandoffMockup } from "@/components/mockups/HandoffMockup";
@@ -74,15 +73,10 @@ export function Features() {
         title="Três coisas que deixam de ser trabalho do time"
       />
 
-      {/* Um divisor ENTRE as linhas, não em volta delas: `divide-y` não deixa
-          sobrar régua solta no topo nem no fim da lista. */}
-      <ul className="mt-12 divide-y divide-border md:mt-14">
+      <ul className="mt-12 divide-y divide-accent md:mt-14">
         {FEATURES.map((feature, index) => (
           <li key={feature.id} className="py-10 first:pt-0 last:pb-0 md:py-14">
-            <Reveal
-              delay={0.05}
-              className="grid gap-6 md:grid-cols-2 md:items-center md:gap-12"
-            >
+            <div className="scroll-focus grid gap-6 md:grid-cols-2 md:items-center md:gap-12">
               <div className="flex flex-col gap-3">
                 <span
                   className="type-micro tabular-nums text-accent"
@@ -90,7 +84,7 @@ export function Features() {
                 >
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <h3 className="type-title text-balance text-text">
+                <h3 className="type-title text-balance text-accent">
                   {feature.title}
                 </h3>
                 <p className="type-body text-pretty text-text-muted">
@@ -98,7 +92,7 @@ export function Features() {
                 </p>
               </div>
               <div>{feature.visual}</div>
-            </Reveal>
+            </div>
           </li>
         ))}
       </ul>

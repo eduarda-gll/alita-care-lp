@@ -1,23 +1,31 @@
 import { useId, useState } from "react";
-import { ArrowRight, CircleCheck, Loader2 } from "lucide-react";
-import { Button, ButtonLink } from "@/components/Button";
-import { CTA_URL } from "@/constants";
+import { CircleCheck, Loader2 } from "lucide-react";
+import { Button } from "@/components/Button";
+import { SITE } from "@/constants";
 import { cn } from "@/lib/cn";
+import { GradientField } from "./GradientField";
 
-/**
- * Endpoint que recebe a dúvida. Fica em variável de ambiente porque é
- * infraestrutura, não conteúdo: muda por ambiente sem tocar no código.
- *
- * ⚠️ Vazia é o estado ESPERADO enquanto o webhook não existir. Nesse caso o
- * card não renderiza um formulário morto — ele troca por um caminho de contato
- * que funciona de verdade. Formulário que aceita o envio e joga fora é pior que
- * formulário nenhum: o visitante acha que pediu ajuda e fica esperando.
- */
 const WEBHOOK_URL = import.meta.env.VITE_CONTACT_WEBHOOK_URL as
   | string
   | undefined;
 
+type WebhookPayload = { success?: unknown; message?: unknown };
+
+const INTRO = "Ainda ficou com alguma dúvida? Fale com nosso time.";
+
 type Status = "idle" | "sending" | "sent" | "error";
+
+function mailtoHref(email: string, message: string) {
+  const subject = encodeURIComponent("Dúvida pelo site do Alita Care");
+  const body = encodeURIComponent(
+    `${message}
+
+---
+Responder para: ${email}`,
+  );
+
+  return `mailto:${SITE.contactEmail}?subject=${subject}&body=${body}`;
+}
 
 export function ContactCard() {
   const messageId = useId();
@@ -25,28 +33,23 @@ export function ContactCard() {
   const errorId = useId();
   const [status, setStatus] = useState<Status>("idle");
 
-  if (!WEBHOOK_URL) {
-    return (
-      <div className="flex flex-col gap-4 rounded-card border border-border bg-surface-recessed p-6">
-        <p className="type-body-strong text-text">
-          Ainda ficou com alguma dúvida?
-        </p>
-        <p className="type-body text-pretty text-text-muted-on-recessed">
-          Fale com o nosso time. A gente responde o que a página não respondeu e
-          mostra a Alita atendendo de verdade.
-        </p>
-        <ButtonLink href={CTA_URL} className="mt-1 self-start">
-          Falar com o time
-          <ArrowRight aria-hidden />
-        </ButtonLink>
-      </div>
-    );
-  }
-
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    const email = String(data.get("email") ?? "");
+    const message = String(data.get("message") ?? "");
+
+    if (!WEBHOOK_URL) {
+      window.location.href = mailtoHref(email, message);
+      setStatus("sent");
+      form.reset();
+      return;
+    }
+
+    data.append("to", SITE.contactEmail);
+    data.append("_subject", `Dúvida pelo site do Alita Care (${email})`);
+    data.append("_replyto", email);
     setStatus("sending");
     try {
       const response = await fetch(WEBHOOK_URL, {
@@ -54,25 +57,29 @@ export function ContactCard() {
         body: data,
       });
       if (!response.ok) throw new Error(String(response.status));
+
+      const payload = (await response
+        .json()
+        .catch(() => null)) as WebhookPayload | null;
+
+      if (payload?.success !== undefined && String(payload.success) !== "true") {
+        throw new Error(String(payload.message ?? "envio recusado"));
+      }
+
       setStatus("sent");
       form.reset();
-    } catch {
+    } catch (error) {
+      console.error("[contato] o envio não foi aceito", error);
       setStatus("error");
     }
   };
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="flex flex-col gap-4 rounded-card border border-border bg-surface-recessed p-6"
-    >
-      <p className="type-body-strong text-text">Ainda ficou com alguma dúvida?</p>
-      <p className="type-body text-pretty text-text-muted-on-recessed">
-        Escreva aqui e o nosso time responde.
-      </p>
+    <form onSubmit={onSubmit} className="flex flex-col gap-4">
+      <p className="type-body text-pretty text-text-muted">{INTRO}</p>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor={emailId} className="type-label text-text">
+      <GradientField>
+        <label htmlFor={emailId} className="sr-only">
           Seu e-mail
         </label>
         <input
@@ -83,27 +90,32 @@ export function ContactCard() {
           autoComplete="email"
           spellCheck={false}
           placeholder="nome@empresa.com"
-          className="h-10 rounded-lg border border-border bg-surface px-3 type-body text-text placeholder:text-text-subtle max-md:text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className={cn(
+            "h-11 rounded-t-[0.6875rem] bg-transparent px-4",
+            "type-body text-text placeholder:text-text-muted max-md:text-base",
+            "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent",
+          )}
         />
-      </div>
-
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor={messageId} className="type-label text-text">
+        <span aria-hidden className="mx-4 h-px bg-border" />
+        <label htmlFor={messageId} className="sr-only">
           Sua dúvida
         </label>
         <textarea
           id={messageId}
           name="message"
           required
-          rows={4}
+          rows={8}
           aria-describedby={status === "error" ? errorId : undefined}
           aria-invalid={status === "error" || undefined}
           placeholder="Conte o que você precisa saber…"
-          className="resize-y rounded-lg border border-border bg-surface p-3 type-body text-text placeholder:text-text-subtle max-md:text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className={cn(
+            "resize-y rounded-b-[0.6875rem] bg-transparent p-4",
+            "type-body text-text placeholder:text-text-muted max-md:text-base",
+            "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent",
+          )}
         />
-      </div>
+      </GradientField>
 
-      {/* `aria-live` porque o resultado aparece sem ação direta sobre ele. */}
       <p
         id={errorId}
         aria-live="polite"
@@ -117,26 +129,41 @@ export function ContactCard() {
         {status === "sent" ? (
           <>
             <CircleCheck className="size-3.5" aria-hidden />
-            Recebemos a sua dúvida. O time responde no e-mail informado.
+            {WEBHOOK_URL
+              ? "Recebemos a sua dúvida. O time responde no e-mail informado."
+              : "Abrimos o seu e-mail com a dúvida pronta. Basta enviar."}
           </>
         ) : null}
-        {status === "error"
-          ? "Não foi possível enviar agora. Tente de novo em instantes ou fale com o time pelo botão do topo."
-          : null}
+        {status === "error" ? (
+          <>
+            Não foi possível enviar agora. Tente de novo em instantes ou escreva
+            direto para{" "}
+            <a
+              href={`mailto:${SITE.contactEmail}`}
+              className="underline underline-offset-4"
+            >
+              {SITE.contactEmail}
+            </a>
+            .
+          </>
+        ) : null}
       </p>
 
-      {/* Submit fica habilitado até o envio começar: desabilitar antes disso
-          seria especulação sobre o que o visitante ainda vai digitar. */}
-      <Button type="submit" disabled={status === "sending"} className="self-end">
-        {status === "sending" ? (
-          <>
-            <Loader2 className="animate-spin" aria-hidden />
-            Enviando…
-          </>
-        ) : (
-          "Enviar dúvida"
-        )}
-      </Button>
+              <Button
+            type="submit"
+            variant="metal"
+            disabled={status === "sending"}
+            className="self-end"
+          >
+            {status === "sending" ? (
+              <>
+                <Loader2 className="animate-spin" aria-hidden />
+                Enviando…
+              </>
+            ) : (
+              "Enviar dúvida"
+            )}
+          </Button>
     </form>
   );
 }

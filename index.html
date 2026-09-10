@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -25,21 +25,9 @@
 
     <!-- Um por tema, casando com `--color-canvas` de cada bloco de colors.css.
          Se o canvas mudar lá, estes dois mudam junto. -->
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#05060a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#05060a" />
 
-    <!--
-      Aplica o tema ANTES do primeiro paint.
-
-      ⚠️ Este script é obrigatório e não é duplicata do next-themes: o HTML desta
-      página é pré-renderizado, então sem ele o visitante veria o tema claro por
-      um frame antes do JS trocar a classe. Ele roda síncrono no <head>, então o
-      <body> já pinta na cor certa.
-
-      A `storageKey` tem que ser a MESMA declarada no ThemeProvider (main.tsx),
-      senão o script e o toggle leem chaves diferentes e a preferência se perde.
-      Sem nada salvo, o padrão é escuro — é o tema em que a marca foi desenhada.
-    -->
+    
     <script>
       (function () {
         try {

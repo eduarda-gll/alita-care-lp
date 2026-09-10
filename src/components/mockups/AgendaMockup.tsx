@@ -8,14 +8,6 @@ export type AgendaSlot = {
   state: "free" | "taken" | "picked";
 };
 
-/**
- * A agenda que a IA consulta antes de oferecer horário. Mesmos tokens
- * `mockup-*` da `ChatMockup`, porque as duas representam a mesma tela.
- *
- * ⚠️ O estado NÃO é comunicado só por cor: cada horário carrega um rótulo em
- * texto ("Ocupado", "Escolhido"), que é o que a §4 da casa exige e o que cobre
- * daltonismo e leitor de tela.
- */
 export function AgendaMockup({
   slots,
   className,
@@ -26,7 +18,7 @@ export function AgendaMockup({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-card border border-mockup-border bg-mockup-bg",
+        "overflow-hidden rounded-card border border-mockup-accent bg-mockup-bg",
         className,
       )}
     >

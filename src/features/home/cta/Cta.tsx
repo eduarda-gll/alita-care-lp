@@ -4,12 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import { ButtonLink } from "@/components/Button";
 import { CTA_URL } from "@/constants";
 
-/**
- * Bloco de conversão, antes do FAQ.
- *
- * O brilho de fundo repete o do hero, com metade da intensidade: fecha a
- * página no mesmo idioma visual com que ela abriu, sem competir com ele.
- */
+
 export function Cta() {
   return (
     <Section labelledBy="cta-titulo">
@@ -24,7 +19,7 @@ export function Cta() {
             }}
           />
 
-          <div className="relative flex flex-col items-center gap-5">
+          <div className="relative flex flex-col items-center gap-8">
             <h2
               id="cta-titulo"
               className="type-display max-w-2xl text-balance text-text"
@@ -35,13 +30,13 @@ export function Cta() {
               Coloque a Alita para atender o primeiro contato e receba o lead já
               qualificado, com a reunião marcada.
             </p>
-            <ButtonLink href={CTA_URL} size="lg" className="mt-2">
+            <ButtonLink href={CTA_URL} size="lg" className="group mt-2 gap-0">
               Começar agora
-              <ArrowRight aria-hidden />
+              <span className="ml-0 grid w-0 place-items-center overflow-hidden opacity-0 transition-[width,opacity,margin] duration-300 ease-out-soft group-hover:ml-2 group-hover:w-4 group-hover:opacity-100">
+                <ArrowRight aria-hidden className="size-4 shrink-0" />
+              </span>
             </ButtonLink>
-            {/* Frase que remove objeção. Diz o que é verificável no produto (o
-                plano gratuito existe), não uma promessa comercial que a LP não
-                tem como sustentar. */}
+            {}
             <p className="type-caption text-text-subtle">
               Comece pelo plano gratuito e evolua quando fizer sentido.
             </p>

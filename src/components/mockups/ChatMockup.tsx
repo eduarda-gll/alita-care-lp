@@ -2,26 +2,11 @@ import { Check, CheckCheck } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 export type ChatMessage = {
-  /** `lead` é quem chega; `alita` é a IA respondendo. */
   from: "lead" | "alita";
   text: string;
   time: string;
 };
 
-/**
- * Captura de conversa. Não é imagem: é DOM, então fica nítida em qualquer DPI,
- * acompanha o tema e não depende de asset que pode faltar no deploy.
- *
- * ⚠️ O painel é ESCURO nos dois temas, de propósito (tokens `mockup-*`): é a
- * captura de um produto que roda no escuro, não uma superfície de página.
- * Mesma decisão do painel de marca do login no app.
- *
- * ⚠️ Divergência consciente do Figma: lá a mensagem do lead sai à DIREITA e a
- * da Alita à esquerda. Aqui é o contrário — quem chega fica à esquerda
- * (recebida) e a Alita à direita (enviada, em cor de marca), que é a convenção
- * de todo app de mensagem e a do próprio ChatView do Alita. Invertido, o
- * mockup lê como bug.
- */
 export function ChatMockup({
   channel,
   messages,

@@ -45,13 +45,11 @@ export function GetStarted() {
       <ol className="mt-12 grid gap-4 md:mt-14 md:grid-cols-3">
         {STEPS.map((step, index) => (
           <Reveal key={step.title} as="li" delay={index * 0.08}>
-            <Card className="flex h-full flex-col gap-4 p-6">
+            <Card className="flex h-full flex-col gap-4 p-6 transition-[translate,scale] duration-300 ease-out-soft hover:-translate-y-1.5 hover:scale-[1.02]">
               <div className="flex items-center gap-3">
                 <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-accent-soft">
                   <step.icon className="size-4.5 text-accent" aria-hidden />
                 </span>
-                {/* O número é decorativo: a ordem já vem do <ol>, e repeti-la
-                    para o leitor de tela só faria ruído. */}
                 <span className="type-micro tabular-nums text-text-subtle" aria-hidden>
                   Passo {index + 1}
                 </span>
@@ -69,9 +67,11 @@ export function GetStarted() {
       </ol>
 
       <div className="mt-10 flex justify-center">
-        <ButtonLink href={CTA_URL} size="lg">
+        <ButtonLink href={CTA_URL} size="lg" className="group gap-0">
           Começar agora
-          <ArrowRight aria-hidden />
+          <span className="ml-0 grid w-0 place-items-center overflow-hidden opacity-0 transition-[width,opacity,margin] duration-300 ease-out-soft group-hover:ml-2 group-hover:w-4 group-hover:opacity-100">
+            <ArrowRight aria-hidden className="size-4 shrink-0" />
+          </span>
         </ButtonLink>
       </div>
     </Section>

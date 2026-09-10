@@ -2,17 +2,9 @@ import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Particles } from "@/components/Particles";
 
-/**
- * Leva a página até a âncora quando o hash muda.
- *
- * O React Router não faz isso sozinho: `<Link to="/#faq">` troca o hash e para
- * por aí. Cobre os dois casos com o mesmo efeito — clicar numa âncora estando
- * na home, e vir de `/planos` (aí o pathname muda primeiro e o alvo só existe
- * depois do render, daí o `requestAnimationFrame`).
- *
- * Sem hash, volta ao topo: é o que se espera ao trocar de página.
- */
+
 function ScrollToHash() {
   const { pathname, hash } = useLocation();
 
@@ -41,6 +33,7 @@ export function App() {
         Pular para o conteúdo
       </a>
       <ScrollToHash />
+      <Particles className="fixed inset-0 -z-10" />
       <Header />
       <main id="conteudo">
         <Outlet />

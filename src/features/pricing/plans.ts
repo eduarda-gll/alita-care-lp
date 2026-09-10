@@ -1,30 +1,16 @@
 export type Plan = {
   id: string;
   name: string;
-  /** Prefixo do preço, quando o valor é um piso ("A partir de"). */
   pricePrefix?: string;
-  /** Preço mensal já formatado. `null` no plano que não tem tabela. */
   price: string | null;
-  /** Substitui o preço quando ele é `null` (plano montado sob medida). */
   priceLabel?: string;
   tagline: string;
-  /** Linha que abre a lista, quando ela não é de entregas e sim de escolhas. */
   featuresIntro?: string;
   features: string[];
   ctaLabel: string;
   highlighted?: boolean;
 };
 
-/**
- * Tabela comercial. Valores conforme a página de planos em produção.
- *
- * ⚠️ Preço é parâmetro COMERCIAL: mudou a tabela, muda aqui, e só aqui. Nenhum
- * componente carrega valor cravado.
- *
- * ⚠️ TODO(comercial): confirmar o nome do 2º plano. Ele veio cortado no topo da
- * captura de referência; "Pro" é a leitura provável pela posição na escada
- * (Starter → ? → Business → Personalizado), não uma confirmação.
- */
 export const PLANS: readonly Plan[] = [
   {
     id: "starter",

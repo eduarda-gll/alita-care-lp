@@ -2,17 +2,7 @@ import type { ElementType, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { Container } from "./Container";
 
-/**
- * O ritmo vertical da página inteira mora AQUI.
- *
- * ⚠️ Nenhuma seção escolhe o próprio `py`. É essa regra que impede o ritmo de
- * desandar quando a oitava seção entra — se uma precisar de respiro diferente,
- * o lugar de mexer é este componente, não a seção. (Convenção herdada do
- * `Section.tsx` do typebot, que faz exatamente isso.)
- *
- * `bleed` desliga o Container interno para a seção que precisa desenhar de
- * borda a borda (o hero, com a nebulosa).
- */
+
 export function Section({
   id,
   children,
@@ -41,12 +31,7 @@ export function Section({
   );
 }
 
-/**
- * Cabeçalho padrão de seção: eyebrow + título + (opcional) linha de apoio.
- *
- * O eyebrow é `<p>`, nunca heading — ele rotula a seção, não estrutura o
- * documento; e o título é `<h2>`, porque o único `<h1>` da página é o do hero.
- */
+ 
 export function SectionHeader({
   eyebrow,
   title,

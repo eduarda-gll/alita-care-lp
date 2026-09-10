@@ -2,17 +2,8 @@ import { Check } from "lucide-react";
 import { Section } from "@/components/Section";
 import { Reveal } from "@/components/Reveal";
 import { ButtonLink } from "@/components/Button";
-import { CTA_URL } from "@/constants";
-import { cn } from "@/lib/cn";
 import { PLANS } from "./plans";
 
-/**
- * Página de planos.
- *
- * A malha de fundo é o traço do Figma para esta página. Ela sai de
- * `--color-grid-line`, então acompanha o tema: quase invisível no claro, um
- * reticulado discreto no escuro.
- */
 export function Pricing() {
   return (
     <Section labelledBy="planos-titulo" className="pt-14 md:pt-20">
@@ -46,24 +37,15 @@ export function Pricing() {
       <ul className="mt-14 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {PLANS.map((plan, index) => (
           <Reveal key={plan.id} as="li" delay={index * 0.06} className="h-full">
-            <div
-              className={cn(
-                "flex h-full flex-col gap-6 rounded-card border p-6",
-                // O plano em destaque se separa por BORDA e por um fundo
-                // levemente tingido, nunca por sombra (regra §10).
-                plan.highlighted
-                  ? "border-accent bg-accent-soft"
-                  : "border-border bg-surface",
-              )}
-            >
+            <div className="plan-card relative flex h-full flex-col gap-6 rounded-card p-6">
+              {plan.highlighted ? (
+                <span className="plan-seal type-micro uppercase tracking-[0.1em]">
+                  Mais escolhido
+                </span>
+              ) : null}
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                   <h2 className="type-heading text-text">{plan.name}</h2>
-                  {plan.highlighted ? (
-                    <span className="rounded-full border border-accent-border bg-surface px-2 py-0.5 type-micro text-accent">
-                      Mais escolhido
-                    </span>
-                  ) : null}
                 </div>
                 <p className="type-caption text-text-muted">{plan.tagline}</p>
               </div>
@@ -76,16 +58,10 @@ export function Pricing() {
                 ) : null}
                 {plan.price ? (
                   <p className="type-display text-text">
-                    {/* `tabular-nums` só no número: aplicado na linha inteira,
-                        ele desalinharia o "/mês" ao lado. */}
                     <span className="tabular-nums">{plan.price}</span>
                     <span className="type-body text-text-muted"> /mês</span>
                   </p>
                 ) : (
-                  /* Um papel menor que o do preço, de propósito: "Monte seu
-                     plano" é texto, não número, e em `type-display` ele quebra
-                     em duas linhas na coluna estreita, desalinhando a lista de
-                     itens em relação aos cards vizinhos. */
                   <p className="type-title text-text">{plan.priceLabel}</p>
                 )}
               </div>
@@ -111,9 +87,9 @@ export function Pricing() {
               </ul>
 
               <ButtonLink
-                href={CTA_URL}
-                variant={plan.highlighted ? "primary" : "outline"}
-                className="mt-auto w-full"
+                href="/"
+                variant="outline"
+                className="mt-auto w-full hover:border-accent-border hover:bg-accent-soft hover:text-accent"
               >
                 {plan.ctaLabel}
               </ButtonLink>

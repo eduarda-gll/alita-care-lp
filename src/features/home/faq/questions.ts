@@ -1,12 +1,5 @@
 export type Question = { question: string; answer: string };
 
-/**
- * As cinco perguntas do Figma, mais a de privacidade que a spec pede.
- *
- * ⚠️ Sentence case, não CAIXA ALTA: o Figma escreve "VAI SOAR ROBÓTICO ?", e a
- * regra da casa aposentou caixa alta em rótulo de UI. Também não há espaço
- * antes do "?" — aquilo é resquício de diagramação, não pontuação do português.
- */
 export const QUESTIONS: readonly Question[] = [
   {
     question: "Vai soar robótico?",

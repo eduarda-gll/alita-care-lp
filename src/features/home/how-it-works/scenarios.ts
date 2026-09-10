@@ -8,10 +8,6 @@ export type Scenario = {
   messages: ChatMessage[];
 };
 
-/**
- * Os três caminhos por onde um lead chega. Os `id` casam com os nós do
- * `ChannelOrbit` — trocar um aqui sem trocar lá deixa a órbita sem canal ativo.
- */
 export const SCENARIOS: readonly Scenario[] = [
   {
     id: "whatsapp",

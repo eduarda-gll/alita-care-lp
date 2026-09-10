@@ -3,11 +3,6 @@ import { cn } from "@/lib/cn";
 
 export type LeadField = { label: string; value: string };
 
-/**
- * A ficha do lead que a IA preenche durante a conversa. Espelha a `ChatMockup`
- * (mesmos tokens `mockup-*`, mesmo escuro fixo) porque as duas aparecem lado a
- * lado e precisam ler como a mesma tela.
- */
 export function LeadRecordMockup({
   title = "Ficha do lead",
   status,
@@ -22,7 +17,7 @@ export function LeadRecordMockup({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-card border border-mockup-border bg-mockup-bg",
+        "overflow-hidden rounded-card border border-mockup-accent bg-mockup-bg",
         className,
       )}
     >

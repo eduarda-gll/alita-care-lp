@@ -1,117 +1,170 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Section } from "@/components/Section";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
-import { cn } from "@/lib/cn";
+import { ClientLogoTrack } from "./ClientLogoTrack";
 import { TESTIMONIALS } from "./quotes";
 
-/**
- * Depoimento de cliente, no arranjo do Figma: retrato à esquerda, citação e
- * números à direita.
- *
- * ⚠️ A seção é CONDICIONAL. Com `TESTIMONIALS` vazio ela devolve `null` e some
- * da página inteira, em vez de renderizar uma citação inventada (ver a nota
- * em `quotes.ts`). Com um item ela vira depoimento único; com vários, ganha os
- * controles de troca.
- */
+const MANUAL_HOLD_MS = 10_000;
+const SWAP_DURATION = 0.7;
+const SWAP_EXIT = 0.4;
+const SWAP_EASE = [0.22, 1, 0.36, 1] as const;
+
 export function Testimonials() {
-  const [index, setIndex] = useState(0);
+  const [activeId, setActiveId] = useState(TESTIMONIALS[0]?.id ?? "");
   const reduced = usePrefersReducedMotion();
+  const holdRef = useRef(0);
+  const [manual, setManual] = useState(false);
+
+  useEffect(() => () => window.clearTimeout(holdRef.current), []);
+
+  const handleSelect = useCallback((id: string) => {
+    window.clearTimeout(holdRef.current);
+    holdRef.current = window.setTimeout(() => {
+      holdRef.current = 0;
+      setManual(false);
+    }, MANUAL_HOLD_MS);
+
+    setManual(true);
+    setActiveId(id);
+  }, []);
+
+  const handleCenter = useCallback((id: string) => {
+    if (holdRef.current) return;
+    setActiveId(id);
+  }, []);
 
   if (TESTIMONIALS.length === 0) return null;
 
-  const active = TESTIMONIALS[index];
-  const initial = active.name.trim().charAt(0).toUpperCase();
+  const active =
+    TESTIMONIALS.find((item) => item.id === activeId) ?? TESTIMONIALS[0];
+
+  const initial = active.company.trim().charAt(0).toUpperCase();
 
   return (
     <Section labelledBy="depoimentos-titulo" className="py-16 md:py-24">
       <div className="rounded-card border border-border bg-surface p-6 md:p-12">
         <div className="grid gap-10 md:grid-cols-[minmax(0,18rem)_1fr] md:items-center md:gap-14">
-          <div className="mx-auto w-full max-w-64">
-            {active.avatar ? (
-              <img
-                src={active.avatar}
-                alt={`Retrato de ${active.name}`}
-                className="aspect-square w-full rounded-full object-cover"
-              />
-            ) : (
-              <span
-                aria-hidden
-                className="type-stat flex aspect-square w-full items-center justify-center rounded-full bg-accent-soft text-accent"
+          
+          {/* Foto do cliente */}
+          <div className="relative mx-auto aspect-square w-full max-w-64">
+            <AnimatePresence initial={false}>
+              <motion.div
+                key={active.id}
+                className="absolute inset-0 overflow-hidden rounded-full bg-accent-soft"
+                initial={reduced ? false : { opacity: 0, scale: 0.985 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={
+                  reduced
+                    ? { opacity: 1 }
+                    : {
+                        opacity: 0,
+                        scale: 1.015,
+                        transition: { duration: SWAP_EXIT, ease: "easeIn" },
+                      }
+                }
+                transition={{
+                  duration: reduced ? 0 : SWAP_DURATION,
+                  ease: SWAP_EASE,
+                }}
               >
-                {initial}
-              </span>
-            )}
+                {active.avatar ? (
+                  <img
+                    src={active.avatar}
+                    alt={`Retrato de ${active.name}, ${active.role} na ${active.company}`}
+                    className="size-full object-cover"
+                  />
+                ) : active.logo ? (
+                  <span className="flex size-full items-center justify-center p-8">
+                    <img
+                      src={active.logo}
+                      alt={active.company}
+                      className="max-h-full w-full object-contain"
+                    />
+                  </span>
+                ) : (
+                  <span
+                    aria-hidden
+                    className="type-stat flex size-full items-center justify-center text-accent"
+                  >
+                    {initial}
+                  </span>
+                )}
+              </motion.div>
+            </AnimatePresence>
           </div>
 
+          {/* Conteúdo do depoimento */}
           <div className="flex flex-col gap-6 text-center md:text-left">
-            {/* O título visível da seção É o eyebrow. Ele fica como <h2> de
-                verdade (não um <p> com um heading escondido ao lado), senão a
-                seção entra na árvore de acessibilidade sem nome. */}
             <h2 id="depoimentos-titulo" className="type-eyebrow text-accent">
               Opiniões reais
             </h2>
 
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.figure
-                key={active.name}
-                className="flex flex-col gap-5"
-                initial={reduced ? false : { opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={reduced ? { opacity: 1 } : { opacity: 0, y: -12 }}
-                transition={{ duration: reduced ? 0 : 0.25 }}
-              >
-                <blockquote className="type-display text-balance text-text">
-                  {active.quote}
-                </blockquote>
-                <figcaption className="type-support text-text-muted">
-                  <span className="text-text">{active.name}</span>
-                  {", "}
-                  {active.role}
-                </figcaption>
+            <div aria-live={manual ? "polite" : "off"}>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.figure
+                  key={active.id}
+                  className="flex flex-col gap-5"
+                  initial={reduced ? false : { opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={
+                    reduced
+                      ? { opacity: 1 }
+                      : {
+                          opacity: 0,
+                          y: -8,
+                          transition: { duration: SWAP_EXIT, ease: "easeIn" },
+                        }
+                  }
+                  transition={{
+                    duration: reduced ? 0 : SWAP_DURATION,
+                    ease: SWAP_EASE,
+                  }}
+                >
+                  <blockquote className="type-display text-balance text-text">
+                    {active.quote}
+                  </blockquote>
 
-                {active.stats?.length ? (
-                  <ul className="mt-2 grid gap-6 sm:grid-cols-3">
-                    {active.stats.map((stat) => (
-                      <li key={stat.label}>
-                        <p className="type-stat text-accent">{stat.value}</p>
-                        <p className="type-caption mt-1 text-text-muted">
-                          {stat.label}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </motion.figure>
-            </AnimatePresence>
+                  <figcaption className="type-support text-text-muted">
+                    <span className="text-text">{active.name}</span>
+                    {", "}
+                    {active.role}
+                    {" na "}
+                    {active.company}
+                  </figcaption>
 
-            {TESTIMONIALS.length > 1 ? (
-              <div className="flex justify-center gap-2 md:justify-start">
-                {TESTIMONIALS.map((testimonial, testimonialIndex) => (
-                  <button
-                    key={testimonial.name}
-                    type="button"
-                    onClick={() => setIndex(testimonialIndex)}
-                    aria-label={`Ver o depoimento de ${testimonial.name}`}
-                    aria-current={testimonialIndex === index ? "true" : undefined}
-                    // A área de clique é de 24px (a caixa), mesmo o traço
-                    // visível tendo 2px de altura — é o mínimo da WCAG 2.5.8.
-                    className="group inline-flex h-6 w-10 items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                  >
-                    <span
-                      className={cn(
-                        "block h-0.5 w-full rounded-full transition-colors duration-200",
-                        testimonialIndex === index
-                          ? "bg-accent"
-                          : "bg-border group-hover:bg-border-strong",
-                      )}
-                    />
-                  </button>
-                ))}
-              </div>
-            ) : null}
+                  {active.stats?.length ? (
+                    <ul className="mt-2 grid gap-6 sm:grid-cols-3">
+                      {active.stats.map((stat) => (
+                        <li key={stat.label}>
+                          <p className="type-stat text-accent">
+                            {stat.value}
+                          </p>
+
+                          <p className="type-caption mt-1 text-text-muted">
+                            {stat.label}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </motion.figure>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
+
+        {TESTIMONIALS.length > 1 ? (
+          <div className="-mx-6 mt-10 border-t border-border pt-6 md:-mx-12 md:mt-12">
+            <ClientLogoTrack
+              items={TESTIMONIALS}
+              activeId={active.id}
+              onSelect={handleSelect}
+              onCenter={handleCenter}
+              animated={!reduced}
+            />
+          </div>
+        ) : null}
       </div>
     </Section>
   );

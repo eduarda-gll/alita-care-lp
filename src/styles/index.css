@@ -1,124 +1,105 @@
 @import "tailwindcss";
 @import "./colors.css";
 
-/* `.dark` na <html> é o que liga o bloco escuro de colors.css. Sem esta linha o
-   Tailwind v4 usaria `prefers-color-scheme`, e o toggle da nav não teria efeito. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-sans: "Manrope Variable", system-ui, ui-sans-serif, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji";
 
-  /* ⚠️ Apaga `--color-white` do namespace: `bg-white`/`text-white` deixam de
-     existir, e branco puro em classe não pinta nada. É de propósito — força o
-     token SEMÂNTICO (é superfície? é tinta? é campo?). Deletar a linha não
-     basta: o tema padrão do Tailwind v4 repõe `#fff`. Precisa de claro fixo nos
-     dois temas? `on-dark`. Mesma regra do alita-frontend. */
   --color-white: initial;
 
   --radius-card: 0.875rem;
   --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   PAPÉIS TIPOGRÁFICOS
-   Use sempre o PAPEL, nunca o tamanho cru. Nada de `text-lg`, `text-[15px]` ou
-   `font-bold` solto. Se nenhum papel servir, adicione um papel novo AQUI antes
-   de usar.
-
-   Fonte é UMA: Manrope. Não somar uma segunda família, nem "só nesta seção".
-
-   ⚠️ Esta escala tem um TIER DE MARKETING que a escala de produto do app não
-   tem (`type-hero`, `type-display`, `type-lead`). Isto é uma LP: a headline não
-   concorre com nenhuma UI, e o corpo precisa de 16px, não dos 14px de tela de
-   produto. Não usar como precedente dentro do app.
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* ═══ Tipografia ═══ */
 
 @utility type-hero {
-  /* Headline do hero. UM por página.
-     ⚠️ Peso 800 é a ÚNICA exceção a "peso 700 é proibido", herdada do
-     `type-hero` do app: a regra existe pra hierarquia de PRODUTO nascer de
-     tamanho, cor e espaço — aqui é marketing sem concorrência visual. Manrope
-     variável vai até 800, então não há faux bold. */
-  font-size: clamp(2.125rem, 1.35rem + 3.4vw, 3.25rem);
+  font-size: clamp(2.5rem, 1.55rem + 4.1vw, 3.875rem);
   line-height: 1.08;
   font-weight: 800;
   letter-spacing: -0.03em;
 }
+
 @utility type-display {
-  /* Título de SEÇÃO (h2). Peso 600, não 700: 800 fica reservado ao hero. */
   font-size: clamp(1.625rem, 1.2rem + 1.85vw, 2.125rem);
   line-height: 1.18;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
+
 @utility type-title {
-  font-size: 1.375rem; /* 22px */
+  font-size: 1.375rem;
   line-height: 1.3;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
+
 @utility type-heading {
-  font-size: 1.125rem; /* 18px */
+  font-size: 1.125rem;
   line-height: 1.35;
   font-weight: 600;
   letter-spacing: -0.005em;
 }
+
 @utility type-section {
-  font-size: 1rem; /* 16px */
+  font-size: 1rem;
   line-height: 1.4;
   font-weight: 600;
 }
+
 @utility type-lead {
-  /* Subcopy do hero e parágrafo de abertura de seção. 16px porque é leitura
-     corrida de marketing, não densidade de app. */
   font-size: 1rem;
   line-height: 1.6;
   font-weight: 400;
 }
+
 @utility type-body {
-  font-size: 0.875rem; /* 14px */
+  font-size: 0.875rem;
   line-height: 1.55;
   font-weight: 400;
 }
+
 @utility type-body-strong {
   font-size: 0.875rem;
   line-height: 1.55;
   font-weight: 500;
 }
+
 @utility type-label {
-  font-size: 0.8125rem; /* 13px — item de nav, texto de botão */
+  font-size: 0.8125rem;
   line-height: 1.4;
   font-weight: 500;
 }
+
 @utility type-support {
   font-size: 0.8125rem;
   line-height: 1.5;
   font-weight: 400;
 }
+
 @utility type-caption {
-  font-size: 0.75rem; /* 12px */
+  font-size: 0.75rem;
   line-height: 1.45;
   font-weight: 400;
 }
+
 @utility type-eyebrow {
-  /* ⚠️ SENTENCE CASE, não CAIXA ALTA. O Figma mostra "COMO FUNCIONA" em caixa
-     alta; a regra da casa aposentou caixa alta em label de UI (inclusive
-     eyebrow), e essa regra vence o mockup. O tracking largo é o que mantém a
-     leitura de eyebrow sem precisar da caixa. */
   font-size: 0.75rem;
   line-height: 1.3;
   font-weight: 600;
   letter-spacing: 0.09em;
 }
+
 @utility type-micro {
   font-size: 0.6875rem;
   line-height: 1.3;
   font-weight: 500;
   letter-spacing: 0.01em;
 }
+
 @utility type-stat {
-  /* Número grande de métrica ("[34]" da seção de depoimentos). */
   font-size: clamp(1.75rem, 1.35rem + 1.7vw, 2.25rem);
   line-height: 1;
   font-weight: 700;
@@ -126,16 +107,30 @@
   font-variant-numeric: tabular-nums;
 }
 
+:root {
+  --field-border-gradient: linear-gradient(
+    150deg,
+    var(--color-accent),
+    var(--color-glow-core) 50%,
+    var(--color-accent-border)
+  );
+  --field-inner-glow:
+    inset 0 0 34px -6px var(--color-glow-core),
+    inset 0 0 12px -4px var(--color-glow-halo);
+}
+
 /* ═══ Base ═══ */
+
 html {
   scroll-behavior: smooth;
-  /* Nav é sticky: âncora que rola até uma seção não pode parar atrás dela. */
   scroll-padding-top: 6.5rem;
   color-scheme: light;
 }
+
 html.dark {
   color-scheme: dark;
 }
+
 body {
   margin: 0;
   background-color: var(--color-canvas);
@@ -144,34 +139,29 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
+
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: 4px;
 }
+
 ::selection {
   background-color: var(--color-accent);
   color: var(--color-on-accent);
 }
 
-/* ═══ Movimento ═══
-   Neutraliza durações E delays. O bloco padrão só zera duração, e delay sem
-   movimento é só espera. As animações do motion leem
-   `usePrefersReducedMotion()` e zeram `duration`/`initial` no JS — o JSX não é
-   apagado, então dá pra reativar. */
+/* ═══ Reduced motion ═══ */
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-    /* ⚠️ Zerar o DELAY é tão obrigatório quanto zerar a duração, e o bloco
-       padrão que circula por aí esquece disso. A entrada em cascata do hero usa
-       `animation-delay` com `fill-mode: both`: sem esta linha, quem pede menos
-       movimento ficaria olhando conteúdo invisível durante o atraso — o que não
-       é movimento reduzido, é só espera. */
     animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -180,35 +170,15 @@ body {
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   ENTRADA DE CONTEÚDO — por CSS, nunca por motion
-   ───────────────────────────────────────────────────────────────────────────
-   ⚠️ REGRA DURA, e ela vem de um bug medido: o build pré-renderiza o HTML de
-   cada rota, e o `motion` grava o estado INICIAL como `style` inline no
-   servidor. Com `initial={{ opacity: 0 }}`, o HTML entregue ao crawler e a quem
-   está com o JS lento nascia com a headline e mais 13 blocos em `opacity: 0` —
-   ou seja, página em branco, anulando o pré-render inteiro.
+/* ═══ Entrada ═══ */
 
-   Por isso toda animação de ENTRADA (carregamento e scroll) é CSS. O estado de
-   repouso no HTML é o VISÍVEL, e a animação é uma camada por cima:
-     · sem CSS  → conteúdo visível, sem animação;
-     · sem JS   → conteúdo visível, com animação;
-     · reduced  → conteúdo visível, sem animação (bloco acima).
-
-   O `motion` continua onde ele é insubstituível: troca de estado dirigida por
-   React (carrossel de cenários, órbita de canais), onde o servidor já
-   renderiza o estado final.
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-/* Entrada no CARREGAMENTO (hero). `--rise-delay` faz a cascata linha a linha. */
 .rise-in {
   animation: rise-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--rise-delay, 0s);
 }
 
-/* Entrada por SCROLL. Sem suporte a view timeline (Firefox hoje), a regra
-   inteira é ignorada e o bloco fica visível — que é o estado correto.
-   `--reveal-shift` escalona itens de um mesmo grid deslocando a faixa. */
+/* ═══ Scroll animations ═══ */
+
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .reveal {
@@ -217,23 +187,74 @@ body {
       animation-range: entry calc(8% + var(--reveal-shift, 0%)) cover
         calc(34% + var(--reveal-shift, 0%));
     }
+
     .scroll-rise {
       animation: scroll-rise linear both;
       animation-timeline: view();
       animation-range: entry 5% cover 38%;
     }
+
     .scroll-drift {
       animation: scroll-drift linear both;
       animation-timeline: view();
       animation-range: cover 0% cover 100%;
     }
+
+    .scroll-focus {
+      animation: scroll-focus linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
   }
 }
+
+@keyframes scroll-focus {
+  0% {
+    opacity: 0.25;
+    filter: blur(7px);
+    transform: translateY(16px);
+  }
+
+  36%,
+  64% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0.25;
+    filter: blur(7px);
+    transform: translateY(-16px);
+  }
+}
+
+.word-in {
+  display: inline-block;
+  animation: word-in 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--word-delay, 0s);
+}
+
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+    filter: blur(11px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
 @keyframes rise-in {
   from {
     opacity: 0;
     transform: translateY(18px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -245,27 +266,532 @@ body {
     opacity: 0;
     transform: translateY(42px) scale(0.97);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
+
 @keyframes scroll-drift {
   from {
     transform: translateY(3%);
   }
+
   to {
     transform: translateY(-3%);
   }
 }
 
-/* ═══ FAQ nativo ═══
-   O accordion é <details>/<summary>, que entrega teclado e a11y de graça. Só o
-   marcador nativo é removido; o "+" que gira é nosso. */
+/* ═══ FAQ ═══ */
+
 details > summary {
   list-style: none;
   cursor: pointer;
 }
+
 details > summary::-webkit-details-marker {
   display: none;
+}
+
+/* ═══════════════════════════════════════
+   REFLEXO / ONDA DOS CANAIS
+   ═══════════════════════════════════════ */
+
+.channel-track-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/*
+ * A luz que atravessa os cards.
+ * Ela é larga e extremamente suave para parecer
+ * um reflexo passando por dentro do material.
+ */
+.channel-wave {
+  position: absolute;
+  z-index: 20;
+
+  top: -100%;
+  bottom: -100%;
+  left: -35%;
+
+  width: 18%;
+
+  pointer-events: none;
+
+  transform: skewX(-18deg);
+
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(70, 150, 255, 0) 20%,
+    rgba(90, 175, 255, 0.025) 35%,
+    rgba(120, 200, 255, 0.12) 47%,
+    rgba(145, 215, 255, 0.2) 50%,
+    rgba(120, 200, 255, 0.12) 53%,
+    rgba(90, 175, 255, 0.025) 65%,
+    rgba(70, 150, 255, 0) 80%,
+    transparent 100%
+  );
+
+  filter: blur(10px);
+
+  opacity: 0;
+
+  mix-blend-mode: screen;
+
+  animation: channel-wave 14s ease-in-out infinite;
+}
+
+/*
+ * Movimento suave:
+ *
+ * esquerda → direita
+ * pequena pausa
+ * direita → esquerda
+ *
+ * Isso evita aquele efeito de "scanner" rápido.
+ */
+@keyframes channel-wave {
+  0% {
+    left: -35%;
+    opacity: 0;
+  }
+
+  12% {
+    left: -20%;
+    opacity: 0.15;
+  }
+
+  38% {
+    left: 105%;
+    opacity: 0.55;
+  }
+
+  50% {
+    left: 115%;
+    opacity: 0;
+  }
+
+  62% {
+    left: 105%;
+    opacity: 0.25;
+  }
+
+  88% {
+    left: -20%;
+    opacity: 0.5;
+  }
+
+  100% {
+    left: -35%;
+    opacity: 0;
+  }
+}
+
+/* Respeita usuários que preferem menos movimento */
+
+@media (prefers-reduced-motion: reduce) {
+  .channel-wave {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+.plan-seal {
+  position: absolute;
+  top: -0.625rem;
+  right: 1.25rem;
+  z-index: 1;
+
+  padding-block: 0.25rem;
+  padding-inline: 0.625rem;
+
+  border-radius: 9999px;
+
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+
+  box-shadow: 0 0 0 3px var(--color-canvas);
+}
+
+.plan-card {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+    var(--field-border-gradient) border-box;
+  box-shadow: var(--field-inner-glow);
+}
+
+
+/* ═══════════════════════════════════════
+   LUZ PUXADA DO HERO
+   ═══════════════════════════════════════ */
+
+.hero-light-sweep {
+  position: absolute;
+  z-index: 0;
+
+  top: -35%;
+  bottom: -35%;
+  left: -45%;
+
+  width: 32%;
+
+  pointer-events: none;
+
+  transform: skewX(-18deg);
+
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(70, 140, 255, 0) 20%,
+    rgba(90, 160, 255, 0.025) 35%,
+    rgba(120, 180, 255, 0.08) 45%,
+    rgba(150, 205, 255, 0.18) 50%,
+    rgba(120, 180, 255, 0.08) 55%,
+    rgba(90, 160, 255, 0.025) 65%,
+    rgba(70, 140, 255, 0) 80%,
+    transparent 100%
+  );
+
+  filter: blur(18px);
+  opacity: 0;
+
+  mix-blend-mode: screen;
+
+  animation: hero-light-sweep 18s ease-in-out infinite;
+}
+
+@keyframes hero-light-sweep {
+  0% {
+    left: -45%;
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 0.15;
+  }
+
+  42% {
+    left: 105%;
+    opacity: 0.45;
+  }
+
+  50% {
+    left: 115%;
+    opacity: 0;
+  }
+
+  58% {
+    left: 105%;
+    opacity: 0.18;
+  }
+
+  88% {
+    left: -20%;
+    opacity: 0.3;
+  }
+
+  100% {
+    left: -45%;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-light-sweep {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ═══════════════════════════════════════
+   FEIXES DO HERO
+   ═══════════════════════════════════════ */
+
+/*
+ * Dois feixes conicos, um por margem: base larga junto a borda, afinando ate
+ * as pontas quase se tocarem no centro.
+ *
+ * A silhueta e recortada no FILHO e quem desfoca e o PAI. No mesmo elemento
+ * nao funciona: o clip-path do CSS corta DEPOIS do filter, e a diagonal
+ * reaparece nitida por mais blur que se aplique.
+ */
+
+.hero-orb {
+  position: absolute;
+  aspect-ratio: 1;
+  width: var(--orb-size);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    var(--color-glow-core),
+    color-mix(in srgb, var(--color-brand-blue) 45%, transparent) 52%,
+    transparent 76%
+  );
+  filter: blur(var(--orb-blur));
+  opacity: var(--orb-opacity);
+  mix-blend-mode: screen;
+}
+
+.hero-beams {
+  --cone-h: clamp(33rem, 82vh, 55rem);
+  --cone-w: 61%;
+  --cone-x: -11%;
+  --beam-y: 72%;
+  --cone-tri: polygon(
+    0.0% -6.0%,
+    5.0% 2.4%,
+    12.0% 12.9%,
+    20.0% 23.1%,
+    30.0% 33.3%,
+    42.0% 42.4%,
+    55.0% 49.0%,
+    70.0% 53.1%,
+    85.0% 54.8%,
+    100.0% 55.0%,
+    85.0% 55.2%,
+    70.0% 55.2%,
+    55.0% 55.4%,
+    42.0% 56.2%,
+    30.0% 58.9%,
+    22.0% 63.1%,
+    16.0% 68.4%,
+    11.0% 75.0%,
+    7.0% 82.2%,
+    4.0% 88.9%,
+    2.0% 94.1%,
+    0.0% 100.0%
+  );
+}
+
+.hero-cone,
+.hero-core,
+.hero-prism {
+  position: absolute;
+  top: var(--beam-y);
+  width: var(--cone-w);
+  translate: 0 -41%;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+.hero-cone--left,
+.hero-core--left,
+.hero-prism--left {
+  left: var(--cone-x);
+}
+
+.hero-cone--right,
+.hero-core--right,
+.hero-prism--right {
+  right: var(--cone-x);
+  scale: -1 1;
+}
+
+/* O feixe da direita corre num azul um pouco mais frio que o da esquerda. */
+
+.hero-cone--right .hero-cone__shape,
+.hero-core--right .hero-core__shape {
+  filter: hue-rotate(-16deg) saturate(1.12);
+}
+
+.hero-cone__shape,
+.hero-core__shape,
+.hero-prism__shape {
+  display: block;
+  height: 100%;
+  width: 100%;
+  clip-path: var(--cone-tri);
+}
+
+/* Halo: a massa larga da base. */
+
+.hero-cone {
+  height: var(--cone-h);
+  filter: blur(15px) saturate(1.32)
+    drop-shadow(0 0 22px color-mix(in srgb, var(--color-brand-blue) 45%, transparent));
+}
+
+/*
+ * Duas animacoes empilhadas nao cabem no mesmo elemento: as duas escreveriam
+ * transform e a ultima ganharia. Por isso a PONTA se move no elemento externo
+ * e a respiracao fica no filho, que ja carrega a silhueta.
+ */
+
+.hero-cone,
+.hero-core,
+.hero-prism {
+  animation: hero-tip-left 7.5s ease-in-out infinite;
+}
+
+@keyframes hero-tip-left {
+  0%,
+  100% {
+    transform: translateX(-1.8%);
+  }
+
+  50% {
+    transform: translateX(3.6%);
+  }
+}
+
+.hero-cone__shape {
+  animation: hero-cone-breathe 17s ease-in-out infinite;
+}
+
+.hero-cone--right .hero-cone__shape {
+  animation-delay: -8.5s;
+}
+
+.hero-cone__shape {
+  background: linear-gradient(
+    90deg,
+    var(--color-molten-3) 0%,
+    color-mix(in srgb, var(--color-molten-3) 72%, transparent) 18%,
+    var(--color-brand-blue) 46%,
+    color-mix(in srgb, var(--color-molten-2) 56%, transparent) 78%,
+    color-mix(in srgb, var(--color-molten-2) 22%, transparent) 100%
+  );
+  --cone-fade: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.4) 12%,
+    #000 34%,
+    #000 66%,
+    rgba(0, 0, 0, 0.4) 88%,
+    transparent 100%
+  );
+  mask-image: var(--cone-fade);
+  -webkit-mask-image: var(--cone-fade);
+}
+
+@keyframes hero-cone-breathe {
+  0%,
+  100% {
+    opacity: 0.86;
+    transform: translateY(-1.5%) scaleY(0.92);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(1.5%) scaleY(1.07);
+  }
+
+  72% {
+    opacity: 0.94;
+    transform: translateY(-0.5%) scaleY(1);
+  }
+}
+
+/* Franja de dispersao, no espirito do Prism: mesmo corpo, matiz girado. */
+
+.hero-prism {
+  height: calc(var(--cone-h) * 0.8);
+  filter: blur(14px) hue-rotate(-30deg) saturate(1.7);
+  opacity: 0.3;
+}
+
+.hero-prism__shape {
+  animation: hero-prism-drift 21s ease-in-out infinite;
+}
+
+.hero-prism--right .hero-prism__shape {
+  animation-delay: -10.5s;
+}
+
+.hero-prism__shape {
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-blue) 0%,
+    color-mix(in srgb, var(--color-brand-blue) 60%, transparent) 52%,
+    transparent 100%
+  );
+}
+
+@keyframes hero-prism-drift {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(-6px) scaleY(0.95);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: translateY(6px) scaleY(1.05);
+  }
+}
+
+/* Nucleo: a lamina clara que segue o eixo e afina na ponta. */
+
+.hero-core {
+  height: calc(var(--cone-h) * 0.34);
+  filter: blur(7px) saturate(1.44)
+    drop-shadow(0 0 14px color-mix(in srgb, var(--color-molten-3) 42%, transparent));
+}
+
+.hero-core__shape {
+  animation: hero-core-breathe 13s ease-in-out infinite;
+}
+
+.hero-core--right .hero-core__shape {
+  animation-delay: -6.5s;
+}
+
+.hero-core__shape {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    color-mix(in srgb, var(--color-molten-3) 92%, #ffffff) 16%,
+    var(--color-brand-blue) 56%,
+    color-mix(in srgb, var(--color-brand-blue) 34%, transparent) 100%
+  );
+  --core-fade: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 20%,
+    #000 42%,
+    #000 58%,
+    rgba(0, 0, 0, 0.55) 80%,
+    transparent 100%
+  );
+  mask-image: var(--core-fade);
+  -webkit-mask-image: var(--core-fade);
+}
+
+@keyframes hero-core-breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scaleY(0.86);
+  }
+
+  50% {
+    opacity: 0.96;
+    transform: scaleY(1.14);
+  }
+}
+
+.hero-scrim {
+  pointer-events: none;
+  background: radial-gradient(
+    52% 38% at 50% 34%,
+    var(--color-canvas) 0%,
+    color-mix(in srgb, var(--color-canvas) 76%, transparent) 44%,
+    transparent 80%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cone,
+  .hero-core,
+  .hero-prism,
+  .hero-cone__shape,
+  .hero-core__shape,
+  .hero-prism__shape {
+    animation: none;
+  }
 }

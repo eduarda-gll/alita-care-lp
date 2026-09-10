@@ -24,7 +24,7 @@ de layout e de técnica de animação.
 ```
 src/
   components/          transversal a todas as páginas
-    Section.tsx        ⚠️ o ritmo vertical da página inteira mora aqui
+    Section.tsx         o ritmo vertical da página inteira mora aqui
     Card.tsx           puro, sem motion
     motion-wrappers.tsx  versões animadas dos componentes puros
     mockups/           capturas de produto em DOM (não são imagens)
@@ -35,7 +35,7 @@ src/
       get-started/  testimonials/  cta/  faq/
     pricing/
   styles/
-    colors.css         ⚠️ ARQUIVO ÚNICO DE COR
+    colors.css          ARQUIVO ÚNICO DE COR
     index.css          papéis type-*, base, animações
 ```
 
@@ -119,7 +119,7 @@ falsa depois que ela subiu.
 
 | Variável | Efeito |
 |---|---|
-| `VITE_CONTACT_WEBHOOK_URL` | Endpoint que recebe as dúvidas do FAQ. **Vazia** (estado atual) faz o card trocar o formulário por um caminho de contato que funciona — formulário que aceita o envio e joga fora é pior que formulário nenhum. |
+| `VITE_CONTACT_WEBHOOK_URL` | Endpoint que recebe as dúvidas do FAQ. Hoje aponta para o **FormSubmit** (`https://formsubmit.co/ajax/<destino>`), declarado em `.env` — o valor termina no bundle do cliente, então não é segredo e fica versionado, senão cada máquina que builda cai no fallback. **Vazia** faz o envio abrir o cliente de e-mail via `mailto:` para `SITE.contactEmail`. Duas coisas do FormSubmit que o código trata: o primeiro envio de um destino novo **não entrega nada** até alguem clicar no link de ativação que chega naquela caixa, e ele responde **HTTP 200 mesmo em falha** (`{"success":"false"}`), por isso o handler checa o campo `success` e não só `response.ok`. |
 
 ---
 

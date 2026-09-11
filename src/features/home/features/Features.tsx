@@ -73,9 +73,9 @@ export function Features() {
         title="Três coisas que deixam de ser trabalho do time"
       />
 
-      <ul className="mt-12 divide-y divide-accent md:mt-14">
+      <ul className="mt-16 divide-y divide-accent md:mt-20">
         {FEATURES.map((feature, index) => (
-          <li key={feature.id} className="py-10 first:pt-0 last:pb-0 md:py-14">
+          <li key={feature.id} className="py-16 first:pt-0 last:pb-0 md:py-24">
             <div className="scroll-focus grid gap-6 md:grid-cols-2 md:items-center md:gap-12">
               <div className="flex flex-col gap-3">
                 <span

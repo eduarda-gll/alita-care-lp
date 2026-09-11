@@ -211,7 +211,7 @@ body {
 @keyframes scroll-focus {
   0% {
     opacity: 0.25;
-    filter: blur(7px);
+    filter: blur(3px);
     transform: translateY(16px);
   }
 
@@ -224,28 +224,55 @@ body {
 
   100% {
     opacity: 0.25;
-    filter: blur(7px);
+    filter: blur(3px);
     transform: translateY(-16px);
   }
 }
 
-.word-in {
+.shiny-text {
+  position: relative;
   display: inline-block;
-  animation: word-in 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: var(--word-delay, 0s);
 }
 
-@keyframes word-in {
+.shiny-text__glint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(
+    102deg,
+    transparent 43%,
+    color-mix(in srgb, var(--color-text-shine) 40%, transparent) 47%,
+    var(--color-text-shine) 50%,
+    color-mix(in srgb, var(--color-text-shine) 40%, transparent) 53%,
+    transparent 57%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  background-position: 160% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(
+    0 0 14px color-mix(in srgb, var(--color-text-shine) 50%, transparent)
+  );
+  animation: shiny-text var(--shiny-duration, 5s) linear infinite;
+}
+
+@keyframes shiny-text {
   from {
-    opacity: 0;
-    transform: translateY(0.4em);
-    filter: blur(11px);
+    background-position: 160% 0;
   }
 
   to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
+    background-position: -60% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shiny-text__glint {
+    animation: none;
+    opacity: 0;
   }
 }
 

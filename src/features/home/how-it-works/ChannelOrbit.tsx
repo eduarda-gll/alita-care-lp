@@ -96,6 +96,12 @@ export function ChannelOrbit({
   const beamId = (id: string) => `${uid}-beam-${id}`.replace(/:/g, "");
   const hubGlowId = `${uid}-hub-glow`.replace(/:/g, "");
   const schedule = beamSchedule(nodes.length);
+  const activeIndex = Math.max(
+    0,
+    nodes.findIndex((node) => node.id === activeId),
+  );
+  const beamSlot = (index: number) =>
+    (index - activeIndex + nodes.length) % nodes.length;
 
   return (
     <div className="relative w-full max-w-sm">
@@ -113,7 +119,7 @@ export function ChannelOrbit({
 
               return (
                 <motion.linearGradient
-                  key={node.id}
+                  key={`${node.id}-${activeId}`}
                   id={beamId(node.id)}
                   gradientUnits="userSpaceOnUse"
                   initial={from}
@@ -125,7 +131,7 @@ export function ChannelOrbit({
                   }}
                   transition={{
                     duration: BEAM_DURATION,
-                    delay: index * schedule.step,
+                    delay: beamSlot(index) * schedule.step,
                     repeat: Infinity,
                     repeatDelay: schedule.cycle - BEAM_DURATION,
                     ease: "linear",
@@ -197,6 +203,7 @@ export function ChannelOrbit({
         })}
 
         <motion.circle
+          key={activeId}
           cx={CX}
           cy={CY}
           r={56}

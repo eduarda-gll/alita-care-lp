@@ -133,6 +133,10 @@ const PAIRS = [
   { label: "L · brand-blue (wordmark Care) sobre surface", fg: "#0a5efa", bg: L.surface, min: 4.5 },
   { label: "D · brand-blue (wordmark Care) sobre surface", fg: "#4185fb", bg: D.surface, min: 4.5 },
 
+  { label: "L · text-shine (feixe que passa na headline) sobre canvas", fg: "#6f8ff7", bg: L.canvas, min: 3 },
+  { label: "D · text-shine (feixe que passa na headline) sobre canvas", fg: "#ffffff", bg: D.canvas, min: 3 },
+  { label: "L · AVISO accent CRU vs text-shine (o quanto o feixe clareia a headline)", fg: L.accent, bg: "#6f8ff7", min: 0 },
+
   { label: "D · molten-3 (tom claro do shader) vs canvas (decorativo)", fg: "#a8c8ff", bg: D.canvas, min: 0 },
   { label: "AVISO text sobre molten-3 (por que o hero leva scrim atras do titulo)", fg: D.text, bg: "#a8c8ff", min: 0 },
 

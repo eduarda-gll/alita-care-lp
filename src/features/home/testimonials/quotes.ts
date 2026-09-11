@@ -4,9 +4,8 @@ export type Testimonial = {
   id: string;
   company: string;
   logo?: string;
+  mark?: string;
   quote: string;
-  name: string;
-  role: string;
   avatar?: string;
   stats?: TestimonialStat[];
 };
@@ -14,67 +13,41 @@ export type Testimonial = {
 export const TESTIMONIALS: readonly Testimonial[] = [
   {
     id: "cliente-1",
-    company: "Cliente 1",
+    company: "Queiroz Advogados Associados",
+    logo: "/clientes/queiroz.png",
+    mark: "/clientes/queiroz.png",
     quote:
       "A gente perdia muito lead simplesmente por demorar pra responder. Com a IA cuidando da primeira conversa, isso praticamente acabou.",
-    name: "[nome do responsável]",
-    role: "[cargo]",
     stats: [
-      { value: "[34]", label: "Conversas atendidas" },
-      { value: "[32]", label: "Leads qualificados" },
-      { value: "[32]", label: "Visitas agendadas" },
+      { value: "52", label: "Conversas atendidas" },
+      { value: "48", label: "Leads qualificados" },
+      { value: "46", label: "Visitas agendadas" },
     ],
   },
   {
     id: "cliente-2",
-    company: "Cliente 2",
+    company: "Dominyum",
+    logo: "/clientes/dominyum.png",
+    mark: "/clientes/dominyum-simbolo.png",
     quote:
       "O time chegava na segunda com a caixa cheia de mensagem do fim de semana. Hoje chega com a agenda cheia.",
-    name: "[nome do responsável]",
-    role: "[cargo]",
     stats: [
-      { value: "[00]", label: "Conversas atendidas" },
-      { value: "[00]", label: "Leads qualificados" },
-      { value: "[00]", label: "Visitas agendadas" },
+      { value: "43", label: "Conversas atendidas" },
+      { value: "37", label: "Leads qualificados" },
+      { value: "35", label: "Visitas agendadas" },
     ],
   },
   {
     id: "cliente-3",
-    company: "Cliente 3",
+    company: "Vísum Calc Soluções",
+    logo: "/clientes/visum.png",
+    mark: "/clientes/visum.png",
     quote:
       "O que mudou o jogo foi o lead chegar pro vendedor já com o contexto da conversa inteira, sem ninguém ter que repetir nada.",
-    name: "[nome do responsável]",
-    role: "[cargo]",
     stats: [
-      { value: "[00]", label: "Conversas atendidas" },
-      { value: "[00]", label: "Leads qualificados" },
-      { value: "[00]", label: "Visitas agendadas" },
-    ],
-  },
-  {
-    id: "cliente-4",
-    company: "Cliente 4",
-    quote:
-      "Colocamos pra rodar num sábado e na segunda já tinha agendamento no calendário. Não precisou treinar ninguém.",
-    name: "[nome do responsável]",
-    role: "[cargo]",
-    stats: [
-      { value: "[00]", label: "Conversas atendidas" },
-      { value: "[00]", label: "Leads qualificados" },
-      { value: "[00]", label: "Visitas agendadas" },
-    ],
-  },
-  {
-    id: "cliente-5",
-    company: "Cliente 5",
-    quote:
-      "Atendemos por WhatsApp, Instagram e telefone. Ver tudo numa fila só foi o que parou de fazer a gente esquecer gente pra trás.",
-    name: "[nome do responsável]",
-    role: "[cargo]",
-    stats: [
-      { value: "[00]", label: "Conversas atendidas" },
-      { value: "[00]", label: "Leads qualificados" },
-      { value: "[00]", label: "Visitas agendadas" },
+      { value: "45", label: "Conversas atendidas" },
+      { value: "40", label: "Leads qualificados" },
+      { value: "38", label: "Visitas agendadas" },
     ],
   },
 ];

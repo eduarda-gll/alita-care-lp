@@ -276,6 +276,64 @@ body {
   }
 }
 
+@property --led-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.led-ring {
+  position: relative;
+}
+
+.led-ring::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--led-angle),
+    var(--color-molten-3) 0deg,
+    var(--color-brand-blue) 22deg,
+    transparent 95deg,
+    transparent 265deg,
+    var(--color-brand-blue) 338deg,
+    var(--color-molten-3) 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--color-brand-blue) 65%, transparent));
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+}
+
+.led-ring:hover::before,
+.led-ring:focus-visible::before {
+  opacity: 1;
+  animation: led-spin 3s linear infinite;
+}
+
+@keyframes led-spin {
+  to {
+    --led-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .led-ring:hover::before,
+  .led-ring:focus-visible::before {
+    animation: none;
+  }
+}
+
 @keyframes rise-in {
   from {
     opacity: 0;

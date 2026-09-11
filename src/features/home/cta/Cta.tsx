@@ -30,7 +30,7 @@ export function Cta() {
               Coloque a Alita para atender o primeiro contato e receba o lead já
               qualificado, com a reunião marcada.
             </p>
-            <ButtonLink href={CTA_URL} size="lg" className="group mt-2 gap-0">
+            <ButtonLink href={CTA_URL} size="lg" className="led-ring group mt-2 gap-0 bg-accent-strong/70 text-on-dark hover:bg-accent-strong/10">
               Começar agora
               <span className="ml-0 grid w-0 place-items-center overflow-hidden opacity-0 transition-[width,opacity,margin] duration-300 ease-out-soft group-hover:ml-2 group-hover:w-4 group-hover:opacity-100">
                 <ArrowRight aria-hidden className="size-4 shrink-0" />

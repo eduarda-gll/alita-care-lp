@@ -5,7 +5,7 @@ import type { Testimonial } from "./quotes";
 const FADE_MASK =
   "linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)";
 
-const SECONDS_PER_LOGO = 13;
+const SECONDS_PER_LOGO = 16;
 
 function LogoButton({
   item,
@@ -28,7 +28,7 @@ function LogoButton({
       aria-current={!decorative && isActive ? "true" : undefined}
       aria-label={decorative ? undefined : `Ver o depoimento de ${item.company}`}
       className={cn(
-        "relative inline-flex h-11 shrink-0 items-center justify-center rounded-lg px-3",
+        "relative inline-flex h-16 shrink-0 items-center justify-center rounded-lg px-3",
         "transition-[opacity,color,scale] duration-700 ease-out-soft",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
         isActive
@@ -41,7 +41,7 @@ function LogoButton({
           src={item.logo}
           alt=""
           className={cn(
-            "h-7 w-auto transition-[filter] duration-700 ease-out-soft",
+            "max-h-11 w-auto max-w-28 object-contain transition-[filter] duration-700 ease-out-soft",
             isActive ? "grayscale-0" : "grayscale",
           )}
         />
@@ -125,7 +125,7 @@ export function ClientLogoTrack({
 
   if (!animated) {
     return (
-      <ul className="flex flex-wrap items-center justify-center gap-x-32 gap-y-2">
+      <ul className="flex flex-wrap items-center justify-center gap-x-64 gap-y-2">
         {items.map((item) => (
           <li key={item.id}>
             <LogoButton
@@ -186,7 +186,7 @@ export function ClientLogoTrack({
         >
           <ul
             ref={blockRef}
-            className="flex shrink-0 items-center gap-x-32 pr-32"
+            className="flex shrink-0 items-center gap-x-64 pr-64"
           >
             {items.map((item) => (
               <li key={item.id}>
@@ -203,7 +203,7 @@ export function ClientLogoTrack({
             <ul
               key={`repeat-${blockIndex}`}
               aria-hidden
-              className="flex shrink-0 items-center gap-x-32 pr-32"
+              className="flex shrink-0 items-center gap-x-64 pr-64"
             >
               {items.map((item) => (
                 <li key={item.id}>
@@ -220,7 +220,7 @@ export function ClientLogoTrack({
 
           <ul
             aria-hidden
-            className="flex shrink-0 items-center gap-x-32 pr-32"
+            className="flex shrink-0 items-center gap-x-64 pr-64"
           >
             {items.map((item) => (
               <li key={`final-${item.id}`}>

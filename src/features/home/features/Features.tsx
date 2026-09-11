@@ -76,7 +76,7 @@ export function Features() {
       <ul className="mt-16 divide-y divide-accent md:mt-20">
         {FEATURES.map((feature, index) => (
           <li key={feature.id} className="py-16 first:pt-0 last:pb-0 md:py-24">
-            <div className="scroll-focus grid gap-6 md:grid-cols-2 md:items-center md:gap-12">
+            <div className="scroll-focus grid gap-8 md:grid-cols-2 md:items-center md:gap-20">
               <div className="flex flex-col gap-3">
                 <span
                   className="type-micro tabular-nums text-accent"
@@ -87,7 +87,7 @@ export function Features() {
                 <h3 className="type-title text-balance text-accent">
                   {feature.title}
                 </h3>
-                <p className="type-body text-pretty text-text-muted">
+                <p className="type-body text-text-muted md:text-justify">
                   {feature.description}
                 </p>
               </div>
